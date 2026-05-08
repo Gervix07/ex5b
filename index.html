@@ -33,40 +33,47 @@
 	</div>
 	
 	<script>
-		function validateTemp(t) {
+function validateTemp(t) {
         if(isNaN(t) || !(t >= -100 && t <= 100)) {
             alert("Please verify whether the temperature value is correct!!!");
             return false;
         }
         return true;
     }
-	    $(document).ready(function(){
+
+    // 2. ฟังก์ชันคำนวณ
+    function convertTemp(t, u) {
+        var t1, u1;
+        if(u == "F"){
+            t1 = t * (9/5) + 32;
+            u1 = "Fahrenheit";
+        }else if(u == "K"){
+            t1 = t + 273.15;
+            u1 = "Kelvin";
+        }else if(u == "R"){
+            t1 = t * (4/5);
+            u1 = "Réaumur";
+        }
+        return { val: t1, unit: u1 };
+    }
+
+    $(document).ready(function(){
         $("button").click(function(){
             var t = Number($('#temp').val());//celsius
             var u = $('#unit').val();
-			   
-			   if(!validateTemp(t)){
+
+            if(!validateTemp(t)){
                 return;
-            
-			   }
-			   
-			   var t1;
-			   var u1;
-			   
-			   if(u == "F"){
-					t1 = t * (9/5) + 32;
-					u1 = "Fahrenheit";
-			   }else if(u == "K"){
-					t1 =  t + 273.15;
-					u1 = "Kelvin";
-			   }else if(u == "R"){
-					t1 = t * (4/5);
-                    u1 = "Réaumur";
-			   }
-			   
-			   alert("Temperature is "+t1+" in "+u1);
-			});
-		});
+            }
+
+            // เรียกใช้ Conversion
+            var result = convertTemp(t, u);
+            var t1 = result.val;
+            var u1 = result.unit;
+
+            alert("Temperature is "+t1+" in "+u1);
+        });
+    });
 	</script>
 </body>
 </html>
